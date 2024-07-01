@@ -1,6 +1,6 @@
 const User = require('../../modules/user');
 const Joi = require('joi');
-
+// 입력 데이터 검증 스키마 정의
 exports.register = async (ctx) => {
   const schema = Joi.object().keys({
     username: Joi.string()
@@ -14,7 +14,7 @@ exports.register = async (ctx) => {
       .max(20)
       .required(),
   });
-
+  // 입력 데이터 검증
   const result = schema.validate(ctx.request.body);
   if (result.error) {
     ctx.status = 400; // Not Found

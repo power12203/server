@@ -2,7 +2,7 @@ const Post = require('../../modules/post');
 const mongoose = require('mongoose');
 const { ObjectId } = mongoose.Types;
 const Joi = require('joi');
-
+// 로그인한 사용자가 포스트 작성자인지 확인하는 미들웨어
 exports.checkOwnPost = async (ctx, next) => {
   const { user, post } = ctx.state;
   // console.log(post.user.id.toString());
@@ -13,7 +13,7 @@ exports.checkOwnPost = async (ctx, next) => {
   }
   return next();
 };
-
+// 포스트 ID를 기반으로 포스트를 조회하고 ctx.state에 저장하는 미들웨어
 exports.getPostById = async (ctx, next) => {
   const { id } = ctx.params;
   if (!ObjectId.isValid(id)) {
@@ -32,7 +32,7 @@ exports.getPostById = async (ctx, next) => {
     ctx.throw(500, 3);
   }
 };
-
+// 포스트 작성 API
 exports.write = async (ctx) => {
   const schema = Joi.object().keys({
     title: Joi.string().required(),
@@ -61,6 +61,7 @@ exports.write = async (ctx) => {
     ctx.throw(500, e);
   }
 };
+// 포스트 목록 조회 API
 exports.list = async (ctx, next) => {
   const page = Number(ctx.query.page || '1');
   if (page < 1) {
@@ -93,6 +94,7 @@ exports.list = async (ctx, next) => {
     ctx.throw(500, e);
   }
 };
+// 특정 포스트 조회 API
 exports.read = async (ctx) => {
   const { id } = ctx.params;
   try {
@@ -107,7 +109,7 @@ exports.read = async (ctx) => {
     ctx.throw(500, e);
   }
 };
-
+// 특정 포스트 삭제 API
 exports.remove = async (ctx) => {
   const { id } = ctx.params;
   try {
